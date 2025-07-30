@@ -1,110 +1,158 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Express App</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+        font-family: Open Sans, sans-serif;
+      }
 
-<head>
-  <title>Express App</title>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-    }
+      button {
+        margin: 10px;
+        padding: 15px 30px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+      }
 
-    button {
-      margin: 10px;
-      padding: 15px 30px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
-    }
+      #noAuth {
+        background-color: #3498db;
+      }
 
-    #noAuth {
-      background-color: #3498db;
-    }
+      #basicAuth {
+        background-color: #2ecc71;
+      }
 
-    #basicAuth {
-      background-color: #2ecc71;
-    }
+      #apiKey {
+        background-color: #f1c40f;
+      }
 
-    #apiKey {
-      background-color: #f1c40f;
-    }
+      #bearerToken {
+        background-color: #e74c3c;
+      }
 
-    #bearerToken {
-      background-color: #e74c3c;
-    }
+      .response-area {
+        background-color: white;
+        padding: 20px;
+        width: 100%
+      }
 
-    .response-area {
-      margin-top: 20px;
-      background-color: white;
-      padding: 20px;
-    }
-  </style>
-</head>
+      .main-response {
+        margin-top: 100px;
+        display: flex;
+        width: 180vh;
+        gap: 50px;
+        padding: 20px;
+      }
 
-<body style="background-color: rgb(255, 255, 192);">
-  <h2 style="text-align:center; margin-top: 20px;">
-    Explore Secrets with API Authentication
-  </h2>
-  <h3 style="text-align: center; font-weight: normal; color: #555;">
-    Practiced No Auth, Basic Auth, API Key & Bearer Token using Axios, Express.js and EJS
-  </h3>
+      .describe-response{
+        border-radius: 20px;
+        padding: 40px;
+        width: 80vh;
+        height: auto;
+      }
+      @media (max-width: 1200px) {
+        .main-response {
+          width: 100%;
+          flex-direction: column;
+        }
+        .response-area{
+        width: 100%;
 
-  <div style="display:fle ;">
-  <button type="submit" id="noAuth" onclick="window.location.href='/noAuth'">No Auth</button>
-  <button id="basicAuth" onclick="window.location.href='/basicAuth'">Basic Auth</button>
-  <button id="apiKey" onclick="window.location.href='/apiKey'">API Key</button>
-  <button id="bearerToken" onclick="window.location.href='/bearerToken'">Bearer Token</button>
-  </div>
+        .describe-response{
+          width: 100%;
+        }
+      }
+      }
+    </style>
+  </head>
 
-  <div class="response-area">
-    <h3>API Response: </h3>
-    <% if (Array.isArray(content)) { %>
-      <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-          <tr>
-            <% for (let key in content[0]) { %>
-              <th><%= key %></th>
-            <% } %>
-          </tr>
-        </thead>
-        <tbody>
-          <% content.forEach(item => { %>
+  <body style="margin-top: 50px; background-color: <%= color %>;">
+
+    <h1 style="text-align: center; margin-top: 20px">
+      Explore Secrets with API Authentication
+    </h1>
+    <h3 style="text-align: center; font-weight: normal; color: #555">
+      Practiced No Auth, Basic Auth, API Key & Bearer Token using Axios,
+      Express.js and EJS
+    </h3>
+
+    <h2 style="color: gray; margin-top: 50px;">Click on the buttons to generate response</h2>
+    <div style="display: flex">
+      <button
+        type="submit"
+        id="noAuth"
+        onclick="window.location.href='/noAuth'"
+      >
+        No Auth
+      </button>
+      <button id="basicAuth" onclick="window.location.href='/basicAuth'">
+        Basic Auth
+      </button>
+      <button id="apiKey" onclick="window.location.href='/apiKey'">
+        API Key
+      </button>
+      <button id="bearerToken" onclick="window.location.href='/bearerToken'">
+        Bearer Token
+      </button>
+    </div>
+
+    <div class="main-response">
+      <div class="response-area">
+        <h3>API Response:</h3>
+        <% if (Array.isArray(content)) { %>
+        <table border="1" cellpadding="8" cellspacing="0">
+          <thead>
             <tr>
-              <% for (let key in item) { %>
-                <td><%= item[key] %></td>
+              <% for (let key in content[0]) { %>
+              <th><%= key %></th>
               <% } %>
             </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    <% } else { %>
-      <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-          <tr>
-            <th>Key</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (let key in content) { %>
+          </thead>
+
+          <tbody>
+            <% content.forEach(item => { %>
+            <tr>
+              <% for (let key in item) { %>
+              <td><%= item[key] %></td>
+              <% } %>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        <% } else { %>
+        <table border="1" cellpadding="8" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let key in content) { %>
             <tr>
               <td><%= key %></td>
               <td><%= content[key] %></td>
             </tr>
-          <% } %>
-        </tbody>
-      </table>
-    <% } %>
-  </div>
-  
-  
-</body>
-
+            <% } %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+      <div
+        class="describe-response"
+      >
+        <p style="font-size: 20px"><%= msg%></p>
+      </div>
+    </div>
+  </body>
 </html>
